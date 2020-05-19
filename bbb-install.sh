@@ -418,17 +418,20 @@ get_IP() {
       systemctl stop nginx
     fi
 
-    need_pkg netcat-openbsd
-    nc -l -p 443 > /dev/null 2>&1 &
-    nc_PID=$!
+    INTERNAL_IP=$IP
+    IP=$external_ip
+
+#    need_pkg netcat-openbsd
+#    nc -l -p 443 > /dev/null 2>&1 &
+#    nc_PID=$!
     
      # Check if we can reach the server through it's external IP address
-     if nc -zvw3 $external_ip 443  > /dev/null 2>&1; then
-       INTERNAL_IP=$IP
-       IP=$external_ip
-     fi
+#     if nc -zvw3 $external_ip 443  > /dev/null 2>&1; then
+#       INTERNAL_IP=$IP
+#       IP=$external_ip
+#     fi
 
-    kill $nc_PID  > /dev/null 2>&1;
+#    kill $nc_PID  > /dev/null 2>&1;
 
     if which nginx; then
       systemctl start nginx
@@ -451,12 +454,13 @@ need_ppa() {
   if [ ! -f /etc/apt/sources.list.d/$1 ]; then
     LC_CTYPE=C.UTF-8 add-apt-repository -y $2 
   fi
-  if ! apt-key list $3 | grep -q -E "1024|4096"; then  # Let's try it a second time
-    LC_CTYPE=C.UTF-8 add-apt-repository $2 -y
-    if ! apt-key list $3 | grep -q -E "1024|4096"; then
-      err "Unable to setup PPA for $2"
-    fi
-  fi
+  #
+#  if ! apt-key list $3 | grep -q -E "1024|4096"; then  # Let's try it a second time
+#    LC_CTYPE=C.UTF-8 add-apt-repository $2 -y
+#    if ! apt-key list $3 | grep -q -E "1024|4096"; then
+#      err "Unable to setup PPA for $2"
+#    fi
+#  fi
 }
 
 check_version() {
@@ -736,7 +740,7 @@ install_ssl() {
   mkdir -p /etc/nginx/ssl
 
   if [ -z "$PROVIDED_CERTIFICATE" ]; then
-    add-apt-repository universe
+#    add-apt-repository universe
     need_ppa certbot-ubuntu-certbot-xenial.list ppa:certbot/certbot 75BCA694
     apt-get update
     need_pkg certbot
