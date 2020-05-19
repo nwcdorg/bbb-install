@@ -128,7 +128,7 @@ main() {
         if [ "$HOST" == "bbb.example.com" ]; then 
           err "You must specify a valid hostname (not the hostname given in the docs)."
         fi
-        check_host $HOST
+        # check_host $HOST
         ;;
       r)
         PACKAGE_REPOSITORY=$OPTARG
