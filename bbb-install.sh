@@ -984,7 +984,7 @@ install_certificate() {
 }
 
 install_coturn() {
-  check_host $COTURN_HOST
+  # check_host $COTURN_HOST
 
   apt-get update
   apt-get -y -o DPkg::options::="--force-confdef" -o DPkg::options::="--force-confold" install grub-pc update-notifier-common
